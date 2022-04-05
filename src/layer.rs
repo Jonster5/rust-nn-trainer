@@ -5,24 +5,24 @@ use crate::{
     math::Matrix,
 };
 
-pub struct Layer {
-    size: usize,
+pub struct Layer<'a> {
+    pub size: usize,
 
-    activation: ActivationFunction,
-    a_name: String,
+    pub activation: ActivationFunction,
+    pub a_name: String,
 
-    weights: Matrix,
-    biases: Matrix,
+    pub weights: Matrix,
+    pub biases: Matrix,
 
-    output: Matrix,
+    pub output: &'a Matrix,
 
-    error: Matrix,
-    gradient: Matrix,
+    pub error: &'a Matrix,
+    pub gradient: &'a Matrix,
 
-    p_gradient: Matrix,
+    pub p_gradient: &'a Matrix,
 }
 
-impl Layer {
+impl Layer<'_> {
     pub fn new(size: usize, p_size: usize, activation: &str) -> Self {
         Self {
             size,
@@ -33,12 +33,12 @@ impl Layer {
             weights: Matrix::new(size, p_size).randomize(),
             biases: Matrix::new(size, p_size).randomize(),
 
-            output: Matrix::new(size, 1),
+            output: &Matrix::new(size, 1),
 
-            error: Matrix::new(size, 1),
-            gradient: Matrix::new(size, 1),
+            error: &Matrix::new(size, 1),
+            gradient: &Matrix::new(size, 1),
 
-            p_gradient: Matrix::new(size, 1),
+            p_gradient: &Matrix::new(size, 1),
         }
     }
 }

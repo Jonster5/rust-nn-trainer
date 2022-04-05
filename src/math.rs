@@ -1,7 +1,8 @@
 #![allow(dead_code)]
 
-use crate::activation;
 use std::{fmt, fs::File, io::Read};
+
+pub type predicate = fn (f64, usize, usize) -> f64;
 
 pub struct Matrix {
     pub rows: usize,
@@ -100,7 +101,7 @@ impl Matrix {
         self.data[row][col] = value;
     }
 
-    pub fn to_array(self) -> Vec<f64> {
+    pub fn to_vec(self) -> Vec<f64> {
         let mut vec = Vec::new();
 
         for i in 0..self.rows {
@@ -109,7 +110,7 @@ impl Matrix {
             }
         }
 
-        vec
+        vec.clone()
     }
 
     pub fn randomize(mut self) -> Self {
@@ -122,7 +123,7 @@ impl Matrix {
         self
     }
 
-    pub fn map(mut self, func: fn(x: f64, r: usize, c: usize) -> f64) -> Self {
+    pub fn map(mut self, func: fn (f64, usize, usize) -> f64) -> Self {
         for i in 0..self.rows {
             for j in 0..self.cols {
                 self.data[i][j] = func(self.data[i][j], i, j);
@@ -290,3 +291,5 @@ impl fmt::Display for Matrix {
         write!(f, "{}", output)
     }
 }
+
+
